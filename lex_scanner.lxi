@@ -1,0 +1,60 @@
+%{ 
+#include "y.tab.h"
+%}
+
+%option caseless
+%option noyywrap
+
+
+letter  [A-Za-z] 
+digit   [0-9]
+zero    [0]
+nonzero [1-9]
+integer     [+-]*{nonzero}+{digit}*|{zero}
+identifier  {letter}({letter}|{digit})*
+delimitator	[;,:]
+acolada     [{}]
+operator	[+*/%()<>=]|"-"|"["|"]"|"<="|">="|"<>"
+specialChar     \.|\?|\!|[ \t]
+character   "'"({letter}|{digit}|{specialChar})"'"
+string      ["]({letter}|{digit}|{specialChar})*["]
+
+%%
+
+START   {return START;}
+STOP    {return STOP;}
+IF      {return IF;}
+ELSE    {return ELSE;}
+WHILE   {return WHILE;} 
+READ    {return READ;}
+WRITE   {return WRITE;}
+INT     {return INT;}
+CHAR    {return CHAR;}
+ARRAY   {return ARRAY;}
+
+":="    {return ASSIGN;}
+
+"<"	    {return L;}
+">"	    {return G;}
+"="     {return EQ;} 
+"<="	{return LE;}
+">="	{return GE;}
+"<>"	{return NE;}
+
+
+{identifier}    {return ID;}
+{integer}       {yylval.p_val = yytext;
+                return CONST_INT;}
+{character}     {yylval.p_val = yytext;
+	            return CONST_CHAR;}
+{string}        {yylval.p_val = yytext;
+	            return CONST_STRING;}  
+
+{delimitator}	{return yytext[0];}
+{acolada}	{return yytext[0];}
+{operator}	{return yytext[0];}
+
+[ \t\n]+ /* ignore spaces, tabulations and line breaks */ {}
+
+ 
+%%

@@ -1,0 +1,24 @@
+START{
+	INT n;
+	READ(n);
+
+	INT i;
+	i := 2;
+
+	INT ok;
+	ok := 1;
+
+	WHILE(i < n) {
+		IF(n % i = 0) {
+			ok := 0;
+		}
+		i := i + 1;
+	}
+
+	IF(ok = 0) {
+		WRITE("Not prime");
+	}
+	ELSE {
+		WRITE("2abcd");
+	}
+} STOP
